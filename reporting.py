@@ -87,7 +87,7 @@ def csv_to_html(report):
             e = e.replace("<", "&#060;")
             e = e.replace(">", "&#062")
             if i == 4:
-                if e >= 7.:
+                if float(e) >= 7.:
                    s += f"<td style='background-color:red;'>{e}</td>"
                 else:
                    s += f"<td style='background-color:orange;'>{e}</td>" 
@@ -126,7 +126,7 @@ def send_to_confluence(report):
                 }
             } 
             }
-    response = requests.post(API_URL, data=json.dumps(body), headers=HEADERS, verify=False)
+    response = requests.post(API_URL, data=json.dumps(body), headers=HEADERS)
 
     if response.status_code != 200:
         logging.error(f"Could not upload report of {report['name']} to confluence!: {response.status_code}")
