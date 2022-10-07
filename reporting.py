@@ -53,7 +53,7 @@ def parse_file(file_path):
         for line in csv_file:
             name = line[13]
             try:
-                if float(line[4]) >= 7.:
+                if float(line[4]) >= 6.:
                     entry = [line[0], line[1], line[2], line[3], line[4], line[7], line[8], line[11], line[18]]
                     report_csv.append(entry)
             except ValueError:
@@ -76,7 +76,7 @@ def csv_to_html(report):
     ls = report["csv"]
 
     if len(ls) == 1:
-        report["html"] = "<p>No critical vulnerabilities with CVSS > 7.0 found.</p>"
+        report["html"] = "<p>No critical vulnerabilities with CVSS > 6.0 found.</p>"
         return
 
     s = "<table><tr>"
@@ -87,7 +87,10 @@ def csv_to_html(report):
             e = e.replace("<", "&#060;")
             e = e.replace(">", "&#062")
             if i == 4:
-                s += f"<td style='background-color:red;'>{e}</td>"
+                if e >= 7.:
+                   s += f"<td style='background-color:red;'>{e}</td>"
+                else:
+                   s += f"<td style='background-color:orange;'>{e}</td>" 
             else: 
                 s += f"<td>{e}</td>"
         s += "</tr>"
